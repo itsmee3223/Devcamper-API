@@ -1,9 +1,9 @@
-const https = require("https");
+const http = require("http");
 const app = require("./app");
 const conncetDB = require("./config/database/db.mongo");
 
 const PORT = process.env.PORT || 8000;
-const server = https.createServer(app);
+const server = http.createServer(app);
 
 const startServer = async () => {
   await conncetDB();
