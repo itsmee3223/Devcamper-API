@@ -17,7 +17,7 @@ const CourseSchema = mongoose.Schema({
     type: Number,
     required: [true, "Please add a tuituion cost"],
   },
-  minimuSkill: {
+  minimumSkill: {
     type: String,
     required: [true, "Please add a minimum skill"],
     enum: ["beginner", "intermediate", "advanced"],
@@ -37,8 +37,8 @@ const CourseSchema = mongoose.Schema({
   },
 });
 
-CourseSchema.statics.getAverageCost = async (bootcampId) => {
-  const obj = this.aggregate([
+CourseSchema.statics.getAverageCost = async function (bootcampId) {
+  const obj = await this.aggregate([
     {
       $match: { bootcamp: bootcampId },
     },
@@ -59,11 +59,11 @@ CourseSchema.statics.getAverageCost = async (bootcampId) => {
   }
 };
 
-CourseSchema.post("save", () => {
+CourseSchema.post("save", function () {
   this.constructor.getAverageCost(this.bootcamp);
 });
 
-CourseSchema.pre("remove", () => {
+CourseSchema.pre("remove", function () {
   this.constructor.getAverageCost(this.bootcamp);
 });
 

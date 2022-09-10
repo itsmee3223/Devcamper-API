@@ -111,14 +111,11 @@ const BootcampSchema = new mongoose.Schema(
   }
 );
 
-// Create bootcamp slug from the name
-BootcampSchema.pre("save", function (next) {
-  this.slug = slugify(this.name, { lower: true });
-  next();
-});
-
-// Geocode & create location field
 BootcampSchema.pre("save", async function (next) {
+  // Create bootcamp slug from the name
+  this.slug = slugify(this.name, { lower: true });
+
+  // Geocode & create location field
   const loc = await geocoder.geocode(this.address);
   this.location = {
     type: "Point",

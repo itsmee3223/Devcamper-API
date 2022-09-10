@@ -13,6 +13,7 @@ require("dotenv").config({ path: path.join(__dirname, "./config/.env") });
 
 const errorHandler = require("./middleware/error");
 const bootcampsRoute = require("./routes/bootcamps.route");
+const coursesRoute = require("./routes/courses.route");
 
 const app = express();
 const limiter = rateLimit({
@@ -35,6 +36,7 @@ app.use(cookieParser());
 app.use(cors());
 
 app.use("/api/v1/bootcamps", bootcampsRoute);
+app.use("/api/v1/courses", coursesRoute);
 app.use(errorHandler);
 
 module.exports = app;
