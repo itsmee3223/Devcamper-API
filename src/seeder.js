@@ -5,15 +5,21 @@ const conncetDB = require("./config/database/db.mongo");
 require("dotenv").config({ path: path.join(__dirname, "./config/.env") });
 
 const Bootcamp = require("./models/Bootcamp.schema");
+const Course = require("./models/Course.shema");
 
 const bootcamps = JSON.parse(
   fs.readFileSync(`${__dirname}/_data/bootcamps.json`, "utf-8")
+);
+
+const courses = JSON.parse(
+  fs.readFileSync(`${__dirname}/_data/courses.json`, "utf-8")
 );
 
 const importData = async () => {
   try {
     await conncetDB();
     await Bootcamp.create(bootcamps);
+    await Course.create(courses);
     console.info("Data imported....");
     process.exit();
   } catch (error) {
@@ -25,6 +31,7 @@ const deleteData = async () => {
   try {
     await conncetDB();
     await Bootcamp.deleteMany();
+    await Course.deleteMany();
     console.info("Data deleted....");
     process.exit();
   } catch (error) {
