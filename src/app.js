@@ -11,6 +11,8 @@ const mongoSanitize = require("express-mongo-sanitize");
 const cookieParser = require("cookie-parser");
 require("dotenv").config({ path: path.join(__dirname, "./config/.env") });
 
+const bootcampsRoute = require("./routes/bootcamps.route");
+
 const app = express();
 const limiter = rateLimit({
   windowMS: 10 * 60 * 1000,
@@ -30,5 +32,7 @@ app.use(limiter);
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors());
+
+app.use("/api/v1/bootcamps", bootcampsRoute);
 
 module.exports = app;

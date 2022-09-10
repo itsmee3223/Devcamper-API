@@ -4,7 +4,7 @@ const path = require("path");
 const conncetDB = require("./config/database/db.mongo");
 require("dotenv").config({ path: path.join(__dirname, "./config/.env") });
 
-const Bootcamp = require("./models/Bootcamp/Bootcamp.schema");
+const Bootcamp = require("./models/Bootcamp.schema");
 
 const bootcamps = JSON.parse(
   fs.readFileSync(`${__dirname}/_data/bootcamps.json`, "utf-8")
