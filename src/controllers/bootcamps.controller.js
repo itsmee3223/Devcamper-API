@@ -48,3 +48,39 @@ exports.httpCreateBootcamp = asyncHandler(async (req, res, next) => {
     data: createdBootcamp,
   });
 });
+
+exports.httpUpdateBootcamp = asyncHandler(async (req, res, next) => {
+  let updatedBootcamp = await BootcampSchema.findById(req.params.id);
+
+  if (!updatedBootcamp) {
+    return next(
+      new ErrorResponse(`Bootcamp not found with id of ${req.params.id}`, 404)
+    );
+  }
+
+  updatedBootcamp = await BootcampSchema.findOneAndUpdate(
+    req.params.id,
+    req.body,
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+
+  return res.status(200).json({
+    success: true,
+    data: updatedBootcamp,
+  });
+});
+
+exports.httpDeleteBootcamp = asyncHandler(async (req, res, next) => {
+  const bootcamp = await BootcampSchema.findById(req.params.id);
+  if (!bootcamp) {
+    return next(
+      new ErrorResponse(`Bootcamp not found with id ${req.params.id}`, 404)
+    );
+  }
+
+  bootcamp.remove();
+  res.status(200).json({ success: true, data: {} });
+});

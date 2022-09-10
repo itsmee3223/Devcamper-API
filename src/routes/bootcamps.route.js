@@ -7,6 +7,8 @@ const {
   httpGetBootcamp,
   httpGetBootcampsInRadius,
   httpCreateBootcamp,
+  httpUpdateBootcamp,
+  httpDeleteBootcamp,
 } = require("../controllers/bootcamps.controller");
 const advancedResults = require("../middleware/advancedResults");
 
@@ -16,5 +18,10 @@ router
   .post(httpCreateBootcamp);
 
 router.get("/radius/:zipcode/:distance", httpGetBootcampsInRadius);
-router.get("/:id", httpGetBootcamp);
+router
+  .route("/:id")
+  .get(httpGetBootcamp)
+  .put(httpUpdateBootcamp)
+  .delete(httpDeleteBootcamp);
+
 module.exports = router;
