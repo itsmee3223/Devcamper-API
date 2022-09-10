@@ -11,6 +11,7 @@ const mongoSanitize = require("express-mongo-sanitize");
 const cookieParser = require("cookie-parser");
 require("dotenv").config({ path: path.join(__dirname, "./config/.env") });
 
+const errorHandler = require("./middleware/error");
 const bootcampsRoute = require("./routes/bootcamps.route");
 
 const app = express();
@@ -34,5 +35,6 @@ app.use(cookieParser());
 app.use(cors());
 
 app.use("/api/v1/bootcamps", bootcampsRoute);
+app.use(errorHandler);
 
 module.exports = app;
