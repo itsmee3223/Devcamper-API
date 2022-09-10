@@ -5,7 +5,7 @@ const BootcampSchema = require("../models/Bootcamp.schema");
 const geocoder = require("../utils/geocoder");
 
 exports.httpGetBootcamps = asyncHandler(async (req, res, next) => {
-  res.status(200).json(res.advancedResults);
+  return res.status(200).json(res.advancedResults);
 });
 
 exports.httpGetBootcamp = asyncHandler(async (req, res, next) => {
@@ -17,7 +17,7 @@ exports.httpGetBootcamp = asyncHandler(async (req, res, next) => {
     );
   }
 
-  res.status(200).json({ success: true, data: bootcamp });
+  return res.status(200).json({ success: true, data: bootcamp });
 });
 
 exports.httpGetBootcampsInRadius = asyncHandler(async (req, res, next) => {
@@ -33,9 +33,18 @@ exports.httpGetBootcampsInRadius = asyncHandler(async (req, res, next) => {
     },
   });
 
-  res.status(200).json({
+  return res.status(200).json({
     success: true,
     count: bootcamps.length,
     data: bootcamps,
+  });
+});
+
+exports.httpCreateBootcamp = asyncHandler(async (req, res, next) => {
+  const createdBootcamp = await BootcampSchema.create(req.body);
+
+  return res.status(201).json({
+    success: true,
+    data: createdBootcamp,
   });
 });
