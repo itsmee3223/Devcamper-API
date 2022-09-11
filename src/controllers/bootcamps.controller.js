@@ -1,4 +1,5 @@
 const path = require("path");
+const fs = require("fs");
 
 const asyncHandler = require("../middleware/async");
 const ErrorResponse = require("../utils/errorResponse");
@@ -83,6 +84,12 @@ exports.httpDeleteBootcamp = asyncHandler(async (req, res, next) => {
     );
   }
 
+  fs.unlink(
+    path.join(__dirname, `../../public/uploads/${bootcamp.photo}`),
+    (err) => {
+      return next(new ErrorResponse(err, 500));
+    }
+  );
   bootcamp.remove();
   res.status(200).json({ success: true, data: {} });
 });
