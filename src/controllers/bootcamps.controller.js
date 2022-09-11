@@ -1,3 +1,5 @@
+const path = require("path");
+
 const asyncHandler = require("../middleware/async");
 const ErrorResponse = require("../utils/errorResponse");
 
@@ -83,4 +85,47 @@ exports.httpDeleteBootcamp = asyncHandler(async (req, res, next) => {
 
   bootcamp.remove();
   res.status(200).json({ success: true, data: {} });
+});
+
+exports.httpUploadBootcampFoto = asyncHandler(async (req, res, next) => {
+  const bootcamp = await BootcampSchema.findById(req.params.id);
+  const file = req.files.file;
+
+  if (!bootcamp) {
+    return next(
+      new ErrorResponse(`Bootcamp not found with id of ${req.params.id}`, 404)
+    );
+  }
+
+  if (!req.files) {
+    return next(new ErrorResponse("Please upload a file", 400));
+  }
+
+  if (!file.mimetype.startsWith("image")) {
+    return next(new ErrorResponse(`Please upload an image file`, 400));
+  }
+
+  if (file.size > process.env.MAX_FILE_SIZE) {
+    return next(
+      new ErrorResponse(
+        `Please upload an image less than ${process.env.MAX_FILE_SIZE}`,
+        400
+      )
+    );
+  }
+
+  file.name = `photo_${bootcamp._id}${path.parse(file.name).ext}`;
+  file.mv(`${process.env.UPLOAD_FILE_PATH}/${file.name}`, async (err) => {
+    if (err) {
+      return next(
+        new ErrorResponse("Problem with file upload try again later....", 500)
+      );
+    }
+  });
+
+  await BootcampSchema.findByIdAndUpdate(req.params.id, { photo: file.name });
+  return res.status(200).json({
+    success: true,
+    data: file.name,
+  });
 });
