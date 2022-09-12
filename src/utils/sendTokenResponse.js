@@ -9,7 +9,7 @@ const sendTokenResponse = (user, statusCode, res) => {
     secure: process.env.NODE_ENV === "production" ? true : false,
   };
 
-  res.status(statusCode).cookie("token", token, options).json({
+  return res.status(statusCode).cookie("token", token, options).json({
     success: true,
     token,
   });
