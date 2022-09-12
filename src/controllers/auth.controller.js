@@ -73,3 +73,21 @@ exports.httpUpdateDetails = asyncHandler(async (req, res, next) => {
     data: user,
   });
 });
+
+exports.httpUpdateUserPassword = asyncHandler(async (req, res, next) => {
+  const { currentPassword, newPassword } = req.body;
+  if (!currentPassword || !newPassword) {
+    return next(
+      new ErrorResponse("Please enter a password and new password", 400)
+    );
+  }
+
+  const user = await UserSchema.findById(req.user.id).select("password");
+  if (!(await user.matchPassword(currentPassword))) {
+    return next(new ErrorResponse("Invalid password", 401));
+  }
+
+  user.password = newPassword;
+  await user.save();
+  sendTokenResponse(user, 200, res);
+});
