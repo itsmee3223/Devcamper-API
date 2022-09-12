@@ -45,3 +45,11 @@ exports.httpLogoutUser = asyncHandler(async (req, res, next) => {
     data: {},
   });
 });
+
+exports.httpGetMe = asyncHandler(async (req, res, next) => {
+  const user = await UserSchema.findById(req.user.id);
+  res.status(200).json({
+    succsess: true,
+    data: user,
+  });
+});

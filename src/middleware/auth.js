@@ -25,6 +25,7 @@ exports.authenticate = asyncHandler(async (req, res, next) => {
       new ErrorResponse("Not authorize to accsess this resource", 401)
     );
   }
+  next();
 });
 
 exports.authorize = (...roles) => {
