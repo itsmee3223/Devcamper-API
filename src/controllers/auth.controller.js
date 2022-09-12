@@ -53,3 +53,23 @@ exports.httpGetMe = asyncHandler(async (req, res, next) => {
     data: user,
   });
 });
+
+exports.httpUpdateDetails = asyncHandler(async (req, res, next) => {
+  const { email, name } = req.body;
+  const user = await UserSchema.findByIdAndUpdate(
+    req.user.id,
+    {
+      name,
+      email,
+    },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+
+  res.status(200).json({
+    succsess: true,
+    data: user,
+  });
+});
