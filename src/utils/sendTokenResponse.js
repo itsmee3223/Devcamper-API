@@ -2,11 +2,11 @@ const sendTokenResponse = (user, statusCode, res) => {
   const token = user.getSignedJwtToken();
 
   const options = {
-    expires: new Date(
+    expire: new Date(
       Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000
     ),
     httpOnly: true,
-    secure: process.env.NODE_ENV ? true : false,
+    secure: process.env.NODE_ENV === "production" ? true : false,
   };
 
   res.status(statusCode).cookie("token", token, options).json({
@@ -14,3 +14,5 @@ const sendTokenResponse = (user, statusCode, res) => {
     token,
   });
 };
+
+module.exports = sendTokenResponse;

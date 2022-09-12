@@ -11,7 +11,7 @@ const UserSchema = new mongoose.Schema({
   email: {
     type: String,
     required: [true, "Please add an email"],
-    uniquie: true,
+    unique: true,
     match: [
       /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
       "Please add a valid email",
@@ -19,7 +19,10 @@ const UserSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ["user", "publisher"],
+    enum: {
+      values: ["user", "publisher"],
+      message: "Please enter a valid role",
+    },
     default: "user",
   },
   password: {
@@ -47,7 +50,7 @@ UserSchema.pre("save", async function (next) {
 
 UserSchema.methods.getSignedJwtToken = function () {
   return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRE,
+    expiresIn: process.env.JWT_EXPIRATION,
   });
 };
 
