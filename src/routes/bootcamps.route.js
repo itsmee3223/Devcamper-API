@@ -28,16 +28,21 @@ router
     }),
     httpGetBootcamps
   )
-  .post(authenticate, authorize("admin", "user"), httpCreateBootcamp);
+  .post(authenticate, authorize("admin", "publisher"), httpCreateBootcamp);
 
 router.get("/radius/:zipcode/:distance", httpGetBootcampsInRadius);
 
-router.put("/:id/photo", httpUploadBootcampFoto);
+router.put(
+  "/:id/photo",
+  authenticate,
+  authorize("admin", "publisher"),
+  httpUploadBootcampFoto
+);
 
 router
   .route("/:id")
   .get(httpGetBootcamp)
-  .put(httpUpdateBootcamp)
-  .delete(httpDeleteBootcamp);
+  .put(authenticate, authorize("admin", "publisher"), httpUpdateBootcamp)
+  .delete(authenticate, authorize("admin", "publisher"), httpDeleteBootcamp);
 
 module.exports = router;
