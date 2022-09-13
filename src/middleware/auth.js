@@ -21,6 +21,7 @@ exports.authenticate = asyncHandler(async (req, res, next) => {
   const decoded = jwt.verify(token, process.env.JWT_SECRET);
   req.user = await UserSchema.findById(decoded.id);
   if (!req.user) {
+    console.log(decoded.id);
     return next(
       new ErrorResponse("Not authorize to accsess this resource", 401)
     );
