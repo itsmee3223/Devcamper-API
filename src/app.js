@@ -17,6 +17,7 @@ const bootcampsRoute = require("./routes/bootcamps.route");
 const coursesRoute = require("./routes/courses.route");
 const authRoute = require("./routes/auth.route");
 const usersRoute = require("./routes/user.route");
+const reviewsRoute = require("./routes/review.route");
 
 const app = express();
 const limiter = rateLimit({
@@ -42,6 +43,7 @@ app.use("/api/v1/bootcamps", bootcampsRoute);
 app.use("/api/v1/courses", coursesRoute);
 app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/users", usersRoute);
+app.use("/api/v1/reviews", reviewsRoute);
 app.use(errorHandler);
 
 module.exports = app;
