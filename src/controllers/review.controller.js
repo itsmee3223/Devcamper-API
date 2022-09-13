@@ -54,3 +54,27 @@ exports.httpCreateReview = asyncHandler(async (req, res, next) => {
     data: review,
   });
 });
+
+exports.httpUpdateReview = asyncHandler(async (req, res, next) => {
+  let review = await ReviewSchema.findById(req.params.reviewId);
+
+  if (!review) {
+    return next(
+      new ErrorResponse(`No review with the id of ${req.params.id}`, 404)
+    );
+  }
+
+  if (review.user.toString() !== req.user.id && req.user.role !== "admin") {
+    return next(new ErrorResponse(`Not authorized to update review`, 401));
+  }
+
+  review = await ReviewSchema.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  });
+
+  res.status(200).json({
+    success: true,
+    data: review,
+  });
+});
