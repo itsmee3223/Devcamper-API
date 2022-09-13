@@ -91,7 +91,7 @@ exports.httpDeleteBootcamp = asyncHandler(async (req, res, next) => {
     }
   );
   bootcamp.remove();
-  res.status(200).json({ success: true, data: {} });
+  return res.status(200).json({ success: true, data: {} });
 });
 
 exports.httpUploadBootcampFoto = asyncHandler(async (req, res, next) => {

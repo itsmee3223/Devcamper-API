@@ -43,7 +43,7 @@ exports.httpLogoutUser = asyncHandler(async (req, res, next) => {
     httpOnly: true,
   });
 
-  res.status(200).json({
+  return res.status(200).json({
     succsess: true,
     data: {},
   });
@@ -51,7 +51,7 @@ exports.httpLogoutUser = asyncHandler(async (req, res, next) => {
 
 exports.httpGetMe = asyncHandler(async (req, res, next) => {
   const user = await UserSchema.findById(req.user.id);
-  res.status(200).json({
+  return res.status(200).json({
     succsess: true,
     data: user,
   });
@@ -71,7 +71,7 @@ exports.httpUpdateDetails = asyncHandler(async (req, res, next) => {
     }
   );
 
-  res.status(200).json({
+  return res.status(200).json({
     succsess: true,
     data: user,
   });
