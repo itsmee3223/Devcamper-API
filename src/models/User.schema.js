@@ -30,12 +30,12 @@ const UserSchema = new mongoose.Schema({
     required: [true, "Please add a password"],
     minlength: [6, "Minimum password length is 6 characters"],
     select: false,
-    resetPasswordToken: String,
-    resetPasswordExpire: Date,
-    createdAt: {
-      type: Date,
-      default: Date.now(),
-    },
+  },
+  resetPasswordToken: String,
+  resetPasswordExpire: Date,
+  createdAt: {
+    type: Date,
+    default: Date.now,
   },
 });
 
@@ -58,7 +58,7 @@ UserSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
-UserSchema.methods.getResetPasswordToken = function () {
+UserSchema.methods.getResetPasswordToken = async function () {
   // Generate token
   const resetToken = crypto.randomBytes(20).toString("hex");
 
@@ -70,7 +70,6 @@ UserSchema.methods.getResetPasswordToken = function () {
 
   // Set expire
   this.resetPasswordExpire = Date.now() + 10 * 60 * 1000;
-
   return resetToken;
 };
 
