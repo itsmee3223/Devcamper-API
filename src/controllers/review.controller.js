@@ -78,3 +78,24 @@ exports.httpUpdateReview = asyncHandler(async (req, res, next) => {
     data: review,
   });
 });
+
+exports.httpDeleteReview = asyncHandler(async (req, res, next) => {
+  const review = await ReviewSchema.findById(req.params.reviewId);
+  if (!review) {
+    return next(
+      new ErrorResponse(`No review with the id of ${req.params.id}`, 404)
+    );
+  }
+
+  // Make sure review belongs to user or user is admin
+  if (review.user.toString() !== req.user.id && req.user.role !== "admin") {
+    return next(new ErrorResponse(`Not authorized to update review`, 401));
+  }
+
+  await review.remove();
+
+  res.status(200).json({
+    success: true,
+    data: {},
+  });
+});

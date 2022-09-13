@@ -3,6 +3,7 @@ const {
   httpGetReview,
   httpCreateReview,
   httpUpdateReview,
+  httpDeleteReview,
 } = require("../controllers/review.controller");
 
 const { authenticate, authorize } = require("../middleware/auth");
@@ -28,6 +29,7 @@ router
 router
   .route("/:reviewId")
   .get(httpGetReview)
-  .put(authenticate, authorize("admin", "user"), httpUpdateReview);
+  .put(authenticate, authorize("admin", "user"), httpUpdateReview)
+  .delete(authenticate, authorize("admin", "user"), httpDeleteReview);
 
 module.exports = router;
