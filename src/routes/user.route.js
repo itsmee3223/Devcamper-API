@@ -9,6 +9,7 @@ const {
   httpGetUser,
   httpCreateUser,
   httpUpdateUser,
+  httpDeleteUser,
 } = require("../controllers/user.controller");
 
 router.use(authenticate);
@@ -19,6 +20,6 @@ router
   .get(advancedResults(UserSchema), httpGetUsers)
   .post(httpCreateUser);
 
-router.route("/:id").get(httpGetUser).put(httpUpdateUser);
+router.route("/:id").get(httpGetUser).put(httpUpdateUser).delete(httpDeleteUser);
 
 module.exports = router;
