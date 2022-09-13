@@ -8,6 +8,7 @@ const {
   httpGetUsers,
   httpGetUser,
   httpCreateUser,
+  httpUpdateUser,
 } = require("../controllers/user.controller");
 
 router.use(authenticate);
@@ -18,6 +19,6 @@ router
   .get(advancedResults(UserSchema), httpGetUsers)
   .post(httpCreateUser);
 
-router.route("/:id").get(httpGetUser);
+router.route("/:id").get(httpGetUser).put(httpUpdateUser);
 
 module.exports = router;
